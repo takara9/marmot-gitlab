@@ -1,10 +1,14 @@
 web:
+  #image: 'gitlab/gitlab-ce:13.1.4-ce.0'
   image: 'gitlab/gitlab-ce:latest'
   restart: always
   hostname: 'gitlab.labs.local'
   environment:
     GITLAB_OMNIBUS_CONFIG: |
       external_url 'https://gitlab.labs.local'
+      nginx['ssl_certificate'] = "/etc/gitlab/ssl/gitlab.labs.local.crt"
+      nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/gitlab.labs.local.key"
+      gitlab_rails['time_zone'] = 'Asia/Tokyo'
       gitlab_rails['gitlab_shell_ssh_port'] = 2224
   ports:
     - '80:80'

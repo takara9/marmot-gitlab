@@ -57,8 +57,7 @@ Vagrant.configure("2") do |config|
 
       v.vm.provision "ansible_local" do |ansible|
         ansible.playbook       = "playbook/" + spec[:playbook]
-        ansible.install_mode   = "pip"
-        #ansible.version        = "2.9.6"    
+        ansible.install_mode   = "pip3"
         ansible.verbose        = false
         ansible.install        = true
         ansible.limit          = spec[:name] 

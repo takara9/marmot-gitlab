@@ -29,8 +29,8 @@
   #
   - debug: msg="{{ ansible_facts }}"        
   - shell: |
-      mkdir cert
-      cd cert
+      mkdir -p /gitlab/config/ssl
+      cd /gitlab/config/ssl
       openssl genrsa -out ca.key 4096
       openssl req -x509 -new -nodes -sha512 -days 3650 \
          -subj "/C=JP/ST=Tokyo/L=Tokyo/O=homelab/OU=homelab/CN={{ my_domain }}" \
@@ -59,15 +59,15 @@
         -CA ca.crt -CAkey ca.key -CAcreateserial \
         -in "{{ my_domain }}.csr" \
         -out "{{ my_domain }}.crt"
-      mkdir -p /data
-      mkdir -p /data/cert
-      cp "{{ my_domain }}.crt" /data/cert/
-      cp "{{ my_domain }}.key" /data/cert/
-      openssl x509 -inform PEM -in "{{ my_domain }}.crt" -out "{{ my_domain }}.cert"
-      mkdir -p "/etc/docker/certs.d/{{ my_domain }}"
-      cp "{{ my_domain }}.cert" "/etc/docker/certs.d/{{ my_domain }}"
-      cp "{{ my_domain }}.key" "/etc/docker/certs.d/{{ my_domain }}"
-      cp ca.crt "/etc/docker/certs.d/{{ my_domain }}"
+      #mkdir -p /data
+      #mkdir -p /data/cert
+      #cp "{{ my_domain }}.crt" /data/cert/
+      #cp "{{ my_domain }}.key" /data/cert/
+      #openssl x509 -inform PEM -in "{{ my_domain }}.crt" -out "{{ my_domain }}.cert"
+      #mkdir -p "/etc/docker/certs.d/{{ my_domain }}"
+      #cp "{{ my_domain }}.cert" "/etc/docker/certs.d/{{ my_domain }}"
+      #cp "{{ my_domain }}.key" "/etc/docker/certs.d/{{ my_domain }}"
+      #cp ca.crt "/etc/docker/certs.d/{{ my_domain }}"
     args:
       chdir: "{{ my_data }}"
   #
@@ -78,3 +78,17 @@
       daemon_reload: yes
       enabled: yes
     
+  - name: copy docker-compose.yml
+    template:
+      src: docker-compose.yml
+      dest: /gitlab
+
+  - shell: |
+      docker-compose up -d
+      #sleep 30
+      #docker-compose down
+      #cp cert/gitlab.labs.local.crt /gitlab/config/ssl/gitlab.labs.local.crt
+      #cp cert/gitlab.labs.local.key /gitlab/config/ssl/gitlab.labs.local.key
+      #docker-compose up -d
+    args:
+      chdir: "{{ my_data }}"
