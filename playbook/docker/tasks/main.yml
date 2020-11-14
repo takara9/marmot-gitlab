@@ -29,9 +29,9 @@
     group: root
     mode: '0644'
 
-- name: Add the user 'vagrant' with a specific uid and a primary group of 'docker'
+- name: Add the user {{ admin_user }} with a specific uid and a primary group of 'docker'
   user:
-    name: vagrant
+    name: "{{ admin_user }}"
     comment: docker exection user
     group: docker
 

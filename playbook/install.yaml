@@ -26,8 +26,12 @@
       - ca-certificates
       - curl
       - software-properties-common
-  #
-  - debug: msg="{{ ansible_facts }}"        
+
+  - name: Create v3.ext
+    template:
+      src: v3.ext.j2
+      dest: /harbor/certs/v3.ext
+      
   - shell: |
       mkdir -p /gitlab/config/ssl
       cd /gitlab/config/ssl
@@ -42,18 +46,6 @@
          -subj "/C=JP/ST=Tokyo/L=Tokyo/O=homelab/OU=homelab/CN={{ my_domain }}" \
          -key "{{ my_domain }}.key" \
          -out "{{ my_domain }}.csr"
-      cat > v3.ext <<EOF
-        authorityKeyIdentifier=keyid,issuer
-        basicConstraints=CA:FALSE
-        keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
-        extendedKeyUsage = serverAuth
-        subjectAltName = @alt_names
-        
-        [alt_names]
-        DNS.1="{{ my_domain }}"
-        DNS.2="{{ my_host }}"
-        IP.1="{{ my_ipaddr }}"
-      EOF
       openssl x509 -req -sha512 -days 3650 \
         -extfile v3.ext \
         -CA ca.crt -CAkey ca.key -CAcreateserial \
