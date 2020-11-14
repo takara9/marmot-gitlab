@@ -27,14 +27,16 @@
       - curl
       - software-properties-common
 
+      
   - name: Create v3.ext
     template:
       src: v3.ext.j2
-      dest: /harbor/certs/v3.ext
+      dest: "{{ my_data }}/v3.ext"
+
       
   - shell: |
-      mkdir -p /gitlab/config/ssl
-      cd /gitlab/config/ssl
+      mkdir -p {{ my_data }}/config/ssl
+      cd {{ my_data }}/config/ssl
       openssl genrsa -out ca.key 4096
       openssl req -x509 -new -nodes -sha512 -days 3650 \
          -subj "/C=JP/ST=Tokyo/L=Tokyo/O=homelab/OU=homelab/CN={{ my_domain }}" \
@@ -64,7 +66,7 @@
   - name: copy docker-compose.yml
     template:
       src: docker-compose.yml
-      dest: /gitlab
+      dest: "{{ my_data }}"
 
   - name: Start Gitlab container
     shell: |
