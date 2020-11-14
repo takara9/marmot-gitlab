@@ -43,13 +43,13 @@
          -key ca.key \
          -out ca.crt
       openssl genrsa -out "{{ my_domain }}.key" 4096
-      touch ~/.rnd
+      touch /root/.rnd
       openssl req -sha512 -new \
          -subj "/C=JP/ST=Tokyo/L=Tokyo/O=homelab/OU=homelab/CN={{ my_domain }}" \
          -key "{{ my_domain }}.key" \
          -out "{{ my_domain }}.csr"
       openssl x509 -req -sha512 -days 3650 \
-        -extfile v3.ext \
+        -extfile {{ my_data }}/v3.ext \
         -CA ca.crt -CAkey ca.key -CAcreateserial \
         -in "{{ my_domain }}.csr" \
         -out "{{ my_domain }}.crt"
