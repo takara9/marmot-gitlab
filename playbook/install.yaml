@@ -28,15 +28,20 @@
       - software-properties-common
 
       
+  - name: mkdir {{ my_data }}/config/ssl
+    file:
+      path: "{{ my_data }}/config/ssl"
+      state: directory
+      owner: root
+      group: root
+      mode: '0775'      
+
   - name: Create v3.ext
     template:
       src: v3.ext.j2
-      dest: "{{ my_data }}/v3.ext"
-
+      dest: "{{ my_data }}/config/ssl/v3.ext"
       
   - shell: |
-      mkdir -p {{ my_data }}/config/ssl
-      cd {{ my_data }}/config/ssl
       openssl genrsa -out ca.key 4096
       openssl req -x509 -new -nodes -sha512 -days 3650 \
          -subj "/C=JP/ST=Tokyo/L=Tokyo/O=homelab/OU=homelab/CN={{ my_domain }}" \
@@ -49,12 +54,12 @@
          -key "{{ my_domain }}.key" \
          -out "{{ my_domain }}.csr"
       openssl x509 -req -sha512 -days 3650 \
-        -extfile {{ my_data }}/v3.ext \
+        -extfile v3.ext \
         -CA ca.crt -CAkey ca.key -CAcreateserial \
         -in "{{ my_domain }}.csr" \
         -out "{{ my_domain }}.crt"
     args:
-      chdir: "{{ my_data }}"
+      chdir: "{{ my_data }}/config/ssl"
   #
   - name: Re-Start dockerd
     systemd:
