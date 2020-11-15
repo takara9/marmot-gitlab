@@ -12,8 +12,8 @@ vm_spec = [
     cpu: 4,
     memory: 4096,
     box: linux_os,
-    private_ip: "172.16.20.5",
-    public_ip: "192.168.1.73",
+    private_ip: "172.16.10.222",
+    public_ip: "192.168.1.222",
     storage: [40], playbook: "install.yaml",
     comment: "gitlab" },
 ]

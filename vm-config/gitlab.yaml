@@ -7,7 +7,7 @@ domain: labs.local
 hypervisor: kvm
 
 ## Cluster Network
-private_ip_subnet: 172.16.40.0/24
+private_ip_subnet: 172.16.10.0/24
 public_ip_subnet:  192.168.1.0/24
 
 domain: labs.local
@@ -17,8 +17,8 @@ vm_spec:
   - name: "gitlab"
     cpu: 1
     memory: 1024
-    private_ip:  "172.16.40.77"
-    public_ip:   "192.168.1.77"
+    private_ip:  "172.16.10.222"
+    public_ip:   "192.168.1.222"
     storage:
     - 80
     comment: "GitLab Server"
