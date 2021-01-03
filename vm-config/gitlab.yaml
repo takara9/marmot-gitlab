@@ -1,5 +1,5 @@
 #
-# 最小構成のK8sクラスタ
+# 最小構成のGitLab
 #
 domain: labs.local
 
@@ -7,18 +7,25 @@ domain: labs.local
 hypervisor: kvm
 
 ## Cluster Network
-private_ip_subnet: 172.16.10.0/24
-public_ip_subnet:  192.168.1.0/24
+private_ip_subnet: 172.16.20.0/16
+public_ip_subnet:  10.0.0.0/8
 
-domain: labs.local
+### Network device and config
+net_dev_default: enp1s0
+net_dev_private: enp2s0
+net_dev_public:  enp3s0
+
+public_ip_gw: 10.0.0.1
+public_ip_dns: 192.168.1.241
 
 ### Virtual Machine Spec
 vm_spec:
   - name: "gitlab"
     cpu: 1
-    memory: 1024
-    private_ip:  "172.16.10.222"
-    public_ip:   "192.168.1.222"
+    memory: 4096
+    private_ip:  "172.16.20.222"
+    public_ip:   "10.0.0.222"
     storage:
     - 80
+    vm_host: nagato    
     comment: "GitLab Server"
