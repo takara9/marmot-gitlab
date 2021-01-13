@@ -30,6 +30,6 @@ vm_spec:
     public_ip:   "10.0.0.222"
     storage:
     - 80
-    vm_host: nagato
+    vm_host: auto
     playbook: install.yaml
     comment: "GitLab Server"
