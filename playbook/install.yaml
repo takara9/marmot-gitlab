@@ -5,7 +5,7 @@
   #
   vars:
     my_host: gitlab
-    my_domain: "{{ my_host }}.labs.local"
+    my_domain: "{{ my_host }}.labo.local"
     my_data: /gitlab
     disk_sdc: "{{ my_data }}"    
   #   
