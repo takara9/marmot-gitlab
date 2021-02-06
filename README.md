@@ -20,6 +20,7 @@ $ vagrant destroy
 ~~~
 
 
+
 ## QEMU/KVMの起動方法
 
 起動
@@ -33,4 +34,5 @@ $ vm-create -f Qemukvm.yaml
 ~~~
 $ vm-destroy -f Qemukvm.yaml
 ~~~
+
 
