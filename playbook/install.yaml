@@ -5,13 +5,18 @@
   #
   vars:
     cluster_admin: ubuntu
+    admin_user:    ubuntu
     my_host:   gitlab
     fqdn:      "{{ my_host }}.labo.local"
     my_data:   /gitlab
     dst_dir:   /gitlab/config/ssl
     disk_sdc:  "{{ my_data }}"
-    public_ip_dns: "192.168.1.241"
-    ca_ip:     "192.168.1.220"
+    public_ip_addr: 192.168.1.222    
+    public_ip_dns:  192.168.1.241
+    ca_ip:          192.168.1.220
+    disk1: "/dev/vdb"
+    disk2: "/dev/vdc"
+    
   #   
   roles:
     - base_linux
