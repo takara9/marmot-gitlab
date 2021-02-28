@@ -31,9 +31,6 @@
     - ca-certificates
     - curl
     - software-properties-common
-    #- nfs-common
-    #- ruby
-    #- emacs-nox
 
 - name: Ensure group 'admin' exists
   group:
@@ -62,16 +59,7 @@
     group: root
     mode: '0644'
     
-
-    
 - debug: msg="{{ ansible_facts.virtualization_type }}"
-##
-## sshkey sharing
-##
-#- name: SSH-KEY FOR KVM VM
-#  include_tasks: sshkey-sharing-kvm.yaml
-#  when: ansible_facts.virtualization_type == "kvm"
-
 
 #
 # DNSの設定を変更

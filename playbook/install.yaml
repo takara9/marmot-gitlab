@@ -5,69 +5,22 @@
   #
   vars:
     cluster_admin: ubuntu
-    my_host: gitlab
-    fqdn: "{{ my_host }}.labo.local"
-    my_data: /gitlab
-    disk_sdc: "{{ my_data }}"
+    my_host:   gitlab
+    fqdn:      "{{ my_host }}.labo.local"
+    my_data:   /gitlab
+    dst_dir:   /gitlab/config/ssl
+    disk_sdc:  "{{ my_data }}"
     public_ip_dns: "192.168.1.241"
+    ca_ip:     "192.168.1.220"
   #   
   roles:
     - base_linux
-    - download_certs    
     - docker
     - vdisks
-    #- create_tls_certs
+    - download_certs        
 
   # 
   tasks:
-#  - name: Install a list of packages
-#    apt:
-#      name: "{{ packages }}"
-#      state: present
-#      update_cache: yes
-#    vars:
-#      packages:
-#      - apt-transport-https
-#      - ca-certificates
-#      - curl
-#      - software-properties-common
-      
-#  - name: mkdir {{ my_data }}/config/ssl
-#    file:
-#      path: "{{ my_data }}/config/ssl"
-#      state: directory
-#      owner: root
-#      group: root
-#      mode: '0775'      
-
-###
-#  - name: Create v3.ext
-#    template:
-#      src: v3.ext.j2
-#      dest: "{{ my_data }}/config/ssl/v3.ext"
-#      
-#  - shell: |
-#      openssl genrsa -out ca.key 4096
-#      openssl req -x509 -new -nodes -sha512 -days 3650 \
-#         -subj "/C=JP/ST=Tokyo/L=Tokyo/O=homelab/OU=homelab/CN={{ fqdn }}" \
-#         -key ca.key \
-#         -out ca.crt
-#      openssl genrsa -out "{{ fqdn }}.key" 4096
-#      touch /root/.rnd
-#      openssl req -sha512 -new \
-#         -subj "/C=JP/ST=Tokyo/L=Tokyo/O=homelab/OU=homelab/CN={{ fqdn }}" \
-#         -key "{{ fqdn }}.key" \
-#         -out "{{ fqdn }}.csr"
-#      openssl x509 -req -sha512 -days 3650 \
-#        -extfile v3.ext \
-#        -CA ca.crt -CAkey ca.key -CAcreateserial \
-#        -in "{{ fqdn }}.csr" \
-#        -out "{{ fqdn }}.crt"
-#    args:
-#      chdir: "{{ my_data }}/config/ssl"
-###
-
-
   - name: Re-Start dockerd
     systemd:
       name: docker
