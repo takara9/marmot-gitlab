@@ -61,6 +61,7 @@
     
 - debug: msg="{{ ansible_facts.virtualization_type }}"
 
+
 #
 # DNSの設定を変更
 #
