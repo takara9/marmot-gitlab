@@ -76,9 +76,33 @@ Password successfully updated for user with username root.
 3 登録したユーザーで再度ログインして、パスワードをセット
 3 sshkey pubを登録する
 
+
 ## プロジェクトを登録
 
 ファイル一個だけのProject test1を作成する
+
+1 ログイン直後の画面にある「New Project」をクリック
+  または ハンバーガーメニュー Menu -> Projects -> Create new project へ
+2 Create blank project を選択
+3 Project name を適当にインプットして 「Create project」をクリック
+
+
+
+
+## GitHubからのプロジェクトのインポート
+
+1 ログイン直後の画面にある「New Project」をクリック
+  または ハンバーガーメニュー Menu -> Projects -> Create new project へ
+2 Import project -> Repo by URL を選択
+3 Git repository URL に GitHub リポジトリのURLをセットする。
+  警告を消すために .gitを追加する。
+4 Create project をクリックすると、GitHubからインポートされる。
+
+
+
+
+
+
 
 
 ## ユーザーの端末からgit clone
