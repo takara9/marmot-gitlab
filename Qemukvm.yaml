@@ -2,7 +2,7 @@
 # 最小構成のGitLab
 #
 domain: labo.local
-cluster_name: git
+cluster_name: infra
 
 ## Hypervisor type
 hypervisor: kvm
