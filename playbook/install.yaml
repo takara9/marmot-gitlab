@@ -9,10 +9,11 @@
     mail_domain:   "labo.local"    
     my_host:       "gitlab"
     fqdn:          "{{ my_host }}.labo.local"
-    my_data:       "/gitlab"
+    my_data:       "/opt"
     dst_dir:       "/etc/gitlab/ssl"
     disk_sdc:      "{{ my_data }}"
-    
+
+
   #   
   roles:
     - base_linux
@@ -23,10 +24,23 @@
 
   # 
   tasks:
-  
-  - name: test
+  - name: add repo for gitlab
     shell: |
       curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
-      #sudo EXTERNAL_URL="https://gitlab.labo.local" apt-get install gitlab-ce
     args:
       chdir: "{{ my_data }}"
+
+
+  - name: Install GitLab
+    shell: |
+      EXTERNAL_URL="https://gitlab.labo.local" apt-get install gitlab-ce
+    args:
+      chdir: "{{ my_data }}"
+
+
+  - name: GitLab password
+    command: cat /etc/gitlab/initial_root_password
+    register: gitlab_pw
+
+
+  - debug: msg="initialAdminPassword = {{ gitlab_pw.stdout_lines }}"
