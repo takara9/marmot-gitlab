@@ -31,6 +31,9 @@
     - ca-certificates
     - curl
     - software-properties-common
+    - openssh-server
+    - tzdata
+    - perl
 
 - name: Ensure group 'admin' exists
   group:

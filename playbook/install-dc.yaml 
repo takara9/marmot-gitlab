@@ -10,7 +10,7 @@
     my_host:       "gitlab"
     fqdn:          "{{ my_host }}.labo.local"
     my_data:       "/gitlab"
-    dst_dir:       "/etc/gitlab/ssl"
+    dst_dir:       "/gitlab/config/ssl"
     disk_sdc:      "{{ my_data }}"
     
   #   
@@ -23,10 +23,20 @@
 
   # 
   tasks:
-  
-  - name: test
+  - name: Re-Start dockerd
+    systemd:
+      name: docker
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+    
+  - name: copy docker-compose.yml
+    template:
+      src: docker-compose.yml
+      dest: "{{ my_data }}"
+
+  - name: Start Gitlab container
     shell: |
-      curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
-      #sudo EXTERNAL_URL="https://gitlab.labo.local" apt-get install gitlab-ce
+      docker-compose up -d
     args:
       chdir: "{{ my_data }}"
