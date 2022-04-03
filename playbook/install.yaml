@@ -9,7 +9,7 @@
     mail_domain:   "labo.local"    
     my_host:       "gitlab"
     fqdn:          "{{ my_host }}.labo.local"
-    my_data:       "/opt"
+    my_data:       "/var/opt/gitlab"
     dst_dir:       "/etc/gitlab/ssl"
     disk_sdc:      "{{ my_data }}"
 
