@@ -112,3 +112,75 @@ cd test1
 
 修正して、コミット、プッシュする方法は、GitHubと同じ
 
+
+
+## GitLab データのバックアップ
+
+バックアップを作成すると、/var/opt/gitlab/backups 以下に、tarファイルが作成される。ファイル名にバージョンが含まれるので、リストアの参考にする。バックアップコマンドで取得されなセンシティブデータは、マニュアルでバックアップする。
+
+~~~
+# gitlab-backup create
+# cp /etc/gitlab/gitlab-secrets.json /var/opt/gitlab/backups/
+# cp /etc/gitlab/gitlab.rb /var/opt/gitlab/backups/
+# gitlab-rake gitlab:env:info
+~~~
+
+参考: https://docs.gitlab.com/ee/raketasks/backup_gitlab.html
+
+
+
+## GitLab データのリストア
+
+リストアは、事前に一部のインスタンスを停止して、バックアップディレクトリのデータを指定して開始する。
+
+~~~
+# cp 1679735120_2023_03_25_15.10.0_gitlab_backup.tar /var/opt/gitlab/backups/
+# gitlab-ctl stop puma
+# gitlab-ctl stop sidekiq
+# gitlab-ctl status
+# gitlab-backup restore BACKUP=1679735120_2023_03_25_15.10.0
+~~~
+
+バックアップで取得されないセンシティブデータをコピーする。
+
+~~~
+# gitlab-secrets.json gitlab-secrets.json.org
+# cp /nfs/gitlab/gitlab-secrets.json .
+~~~
+
+再構成を実行して、再起動後、チェックを実行する
+
+~~~
+# gitlab-ctl reconfigure
+# gitlab-ctl restart
+# gitlab-rake gitlab:check SANITIZE=true
+# gitlab-rake gitlab:doctor:secrets
+# gitlab-rake gitlab:artifacts:check
+# gitlab-rake gitlab:lfs:check
+# gitlab-rake gitlab:uploads:check
+~~~
+
+こちらも戻しておく
+
+~~~
+# mv gitlab.rb gitlab.rb.org
+# cp /nfs/gitlab/gitlab.rb .
+~~~
+
+参考: https://docs.gitlab.com/ee/raketasks/restore_gitlab.html
+
+
+
+## GitLabバージョンアップ
+
+移行では、移行元と移行先のGitLabのバージョンが一致していなければならない。そのため、移行元のバージョンを上げ、移行先と一致させる手順をとる。その際、アップグレードパスに沿って、バージョンを上げなければならない。そして、バージョンが一致した処で、バックアップを取得する。
+
+~~~
+# apt-cache madison gitlab-ce
+# apt install gitlab-ee=15.0.5-ce.0
+~~~
+
+参考:
+* https://docs.gitlab.com/ee/update/package/index.html#upgrade-to-a-specific-version-using-the-official-repositories
+* https://docs.gitlab.com/ee/update/index.html#upgrade-paths 
+
