@@ -34,6 +34,10 @@
     - openssh-server
     - tzdata
     - perl
+    - rsync
+    - nfs-common
+    - nfs-client
+
 
 - name: Ensure group 'admin' exists
   group:
@@ -61,7 +65,7 @@
     owner: root
     group: root
     mode: '0644'
-    
+
 - debug: msg="{{ ansible_facts.virtualization_type }}"
 
 
@@ -93,4 +97,6 @@
     state: restarted
     daemon_reload: yes
     enabled: yes
- 
+
+- name: Mount NFS
+  include_tasks: nfs-mount.yaml

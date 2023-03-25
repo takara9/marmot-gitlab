@@ -6,15 +6,15 @@
   vars:
     cluster_admin: ubuntu
     admin_user:    ubuntu
-    mail_domain:   "labo.local"    
+    mail_domain:   "labo.local"
     my_host:       "gitlab"
     fqdn:          "{{ my_host }}.labo.local"
-    my_data:       "/var/opt/gitlab"
+    gitlab_data:   "/var/opt/gitlab"
+    gitlab_bin:    "/opt/gitlab"
     dst_dir:       "/etc/gitlab/ssl"
-    disk_sdc:      "{{ my_data }}"
+    #disk_sdc:      "{{ my_data }}"
 
-
-  #   
+  #
   roles:
     - base_linux
     - docker
@@ -22,20 +22,20 @@
     - download_certs
     - mail-client
 
-  # 
+  #
   tasks:
   - name: add repo for gitlab
     shell: |
       curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
     args:
-      chdir: "{{ my_data }}"
+      chdir: "{{ gitlab_data }}"
 
 
   - name: Install GitLab
     shell: |
       EXTERNAL_URL="https://gitlab.labo.local" apt-get install gitlab-ce
     args:
-      chdir: "{{ my_data }}"
+      chdir: "{{ gitlab_data }}"
 
 
   - name: GitLab password
